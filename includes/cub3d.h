@@ -14,8 +14,6 @@
 # define CUB3D_H
 
 # include "../libs/libft/libft.h"
-# include "../libs/mlx/mlx.h"
-# include "../libs/mlx/mlx_int.h"
 
 # include <stdio.h>
 # include <math.h>
@@ -24,6 +22,12 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/time.h>
+
+typedef struct t_game
+{
+	t_gc	*gc;
+	char	**map;
+}
 
 typedef struct s_gcnode
 {
@@ -45,5 +49,6 @@ char		*gc_strndup(t_gc *gc, const char *s, int n);
 char		*gc_strjoin(t_gc *gc, const char *s1, const char *s2);
 char		*gc_substr(t_gc *gc, char const *s, unsigned int start, size_t len);
 
+int			check_arg(char *args);
 
-#endif CUB3D_H
+#endif
