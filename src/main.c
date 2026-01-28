@@ -1,27 +1,30 @@
 #include "../includes/cub3d.h"
 
-int	fill_map(t_game *game)
-{
-	int	line;
-	int	i;
-
-	i = 0;
-	game->map = gc_calloc(game->gc, sizeof(char **));
-	line = get_next_line(game->map_fd);
-	while(line && line[0] == '1' || line[0] == ' ')
-	{
-		game->map[i] = gc_calloc(game->gc, sizeof(char *))
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_game	*game;
+	t_gc	*gc;
 
 	if (argc != 2)
-		return (printf("Error\n: wrong number of arguments\n"), 1);
-	game->gc = gc_new();
+		return (printf("Error: wrong number of arguments\n"), 1);
+	gc = gc_new();
+	if (!gc)
+		return (1);
+	game = gc_calloc(gc, sizeof(t_game));
+	if (!game)
+		return (1);
+	game->gc = gc;
 	game->map_fd = open(argv[1], O_RDONLY);
+	if (game->map_fd < 0)
+		return (perror("open"), 1);
+	if (fill_map(game))
+		return (printf("Error: map parsing failed\n"), 1);
+	if(!check_void(game))
+		return(printf("lose"),0);
+	printf("win");
+
 	return (0);
 }
+
+
 

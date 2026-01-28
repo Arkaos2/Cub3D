@@ -18,7 +18,10 @@ LDFLAGS			= -lreadline
 SRCS			= src/main.c \
 			src/gc.c \
 			src/gc_utils.c \
-			src/parsing/check_arg.c
+			src/parsing/check_arg.c \
+			src/parsing/check_map.c \
+			src/parsing/check_valid_map.c
+
 
 OBJS			= $(SRCS:.c=.o)
 

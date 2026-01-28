@@ -23,11 +23,12 @@
 # include <fcntl.h>
 # include <sys/time.h>
 
-typedef struct t_game
+typedef struct s_game
 {
 	t_gc	*gc;
 	char	**map;
-}
+	int		map_fd;
+}			t_game;
 
 typedef struct s_gcnode
 {
@@ -49,6 +50,9 @@ char		*gc_strndup(t_gc *gc, const char *s, int n);
 char		*gc_strjoin(t_gc *gc, const char *s1, const char *s2);
 char		*gc_substr(t_gc *gc, char const *s, unsigned int start, size_t len);
 
+int		check_void(t_game *game);
 int			check_arg(char *args);
+int			fill_map(t_game *game);
+
 
 #endif
