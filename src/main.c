@@ -4,6 +4,8 @@ int	main(int argc, char **argv)
 {
 	t_game	*game;
 	t_gc	*gc;
+	char	*line;
+	int		i;
 
 	if (argc != 2)
 		return (printf("Error: wrong number of arguments\n"), 1);
@@ -17,14 +19,20 @@ int	main(int argc, char **argv)
 	game->map_fd = open(argv[1], O_RDONLY);
 	if (game->map_fd < 0)
 		return (perror("open"), 1);
-	if (fill_map(game))
+	line = fill_data(game);
+	if (!line)
 		return (printf("Error: map parsing failed\n"), 1);
-	if(!check_void(game))
-		return(printf("lose"),0);
-	printf("win");
-
+	if (fill_map(game, line) < 0)
+		return (printf("Error: map allocation failed\n"), 1);
+	close(game->map_fd);
+	pad_map(game);
+	printf("%s%s%s%s%d\n%d\n", game->path_ea, game->path_no, game->path_we, game->path_so, game->f_color, game->c_color);
+	i = 0;
+	while (game->map[i])
+	{
+		printf("%s\n", game->map[i]);
+		i++;
+	}
 	return (0);
 }
-
-
 

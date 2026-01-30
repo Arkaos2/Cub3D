@@ -1,63 +1,82 @@
 #include "cub3d.h"
 
-static int	is_floor(char c)
+static int	max_width(t_game *game)
 {
-	return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
+	int	i;
+	int	max;
+	int	len;
+
+	i = 0;
+	max = 0;
+	while (game->map[i])
+	{
+		len = ft_strlen(game->map[i]);
+		if (len > max)
+			max = len;
+		i++;
+	}
+	return (max);
 }
 
-static int	is_void(char **map, int i, int j)
+int	fill_map(t_game *game, char *line)
 {
-	if (i < 0 || j < 0)
-		return (1);
-	if (!map[i])
-		return (1);
-	if (j >= (int)ft_strlen(map[i]))
-		return (1);
-	if (map[i][j] == ' ' || map[i][j] == '\0')
-		return (1);
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	game->map = gc_calloc(game->gc, sizeof(char *) * 1024);
+	if (!game->map)
+		return (-1);
+	while (line)
+	{
+		tmp = ft_strtrim(line, "\n");
+		free(line);
+		if (!tmp)
+			return (-1);
+		game->map[i] = gc_strdup(game->gc, tmp);
+		free(tmp);
+		if (!game->map[i])
+			return (-1);
+		i++;
+		if (i >= 1024)
+			break;
+		line = get_next_line(game->map_fd);
+	}
+	game->map[i] = NULL;
+	game->height = i;
 	return (0);
 }
 
-static int	check_cell(char **map, int i, int j)
+int pad_map(t_game *game)
 {
-	if (is_void(map, i, j - 1))
-		return (0);
-	if (is_void(map, i, j + 1))
-		return (0);
-	if (is_void(map, i - 1, j))
-		return (0);
-	if (is_void(map, i + 1, j))
-		return (0);
-	return (1);
-}
+	int i;
+	int len;
+	char *new_line;
+	int j;
 
-int	check_void(t_game *game)
-{
-	int	i;
-	int	j;
-
+	game->width = max_width(game);
 	i = 0;
 	while (game->map[i])
 	{
-		j = 0;
-		while (game->map[i][j])
+		len = ft_strlen(game->map[i]);
+		if (len < game->width)
 		{
-			if (is_floor(game->map[i][j]))
+			new_line = gc_calloc(game->gc, game->width + 1);
+			if (!new_line)
+				return -1;
+			j = 0;
+			while (j < len)
 			{
-				if (!check_cell(game->map, i, j))
-					return (0);
+				new_line[j] = game->map[i][j];
+				j++;
 			}
-			j++;
+			while (j < game->width)
+				new_line[j++] = ' ';
+			new_line[j] = '\0';
+			game->map[i] = new_line;
 		}
 		i++;
 	}
-	return (1);
+	return 1;
 }
 
-int	flood_fill(char **map, int x, int y)
-{
-	if(!map && !map[x][y] && x < 0 && y < 0 && map[x] != '\0' && map[x][y] != '\0')
-		return (-1);
-
-
-}

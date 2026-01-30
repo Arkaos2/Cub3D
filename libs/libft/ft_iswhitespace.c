@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 17:05:16 by saibelab          #+#    #+#             */
-/*   Updated: 2025/11/25 19:00:50 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/01/29 17:50:39 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,13 @@ int	is_whitespace(char *s)
 		i++;
 	}
 	return (1);
+}
+
+void skip_whitespace(char *s, int *i)
+{
+	if (!s)
+		return ;
+	while (ft_is_whitespace(s[*i]))
+		(*i)++;
+	return ;
 }
