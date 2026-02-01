@@ -21,7 +21,7 @@ static int	max_width(t_game *game)
 int	fill_map(t_game *game, char *line)
 {
 	int		i;
-	char	*tmp;
+	size_t	len;
 
 	i = 0;
 	game->map = gc_calloc(game->gc, sizeof(char *) * 1024);
@@ -29,30 +29,31 @@ int	fill_map(t_game *game, char *line)
 		return (-1);
 	while (line)
 	{
-		tmp = ft_strtrim(line, "\n");
+		len = ft_strlen(line);
+		while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+		{
+			line[len - 1] = '\0';
+			len--;
+		}
+		game->map[i] = gc_strdup(game->gc, line);
 		free(line);
-		if (!tmp)
-			return (-1);
-		game->map[i] = gc_strdup(game->gc, tmp);
-		free(tmp);
 		if (!game->map[i])
 			return (-1);
 		i++;
-		if (i >= 1024)
-			break;
 		line = get_next_line(game->map_fd);
+		if (i >= 1023)
+			return (-1);
 	}
 	game->map[i] = NULL;
 	game->height = i;
 	return (0);
 }
 
-int pad_map(t_game *game)
+int	pad_map(t_game *game)
 {
-	int i;
-	int len;
-	char *new_line;
-	int j;
+	int		i;
+	int		len;
+	char	*new_line;
 
 	game->width = max_width(game);
 	i = 0;
@@ -63,20 +64,14 @@ int pad_map(t_game *game)
 		{
 			new_line = gc_calloc(game->gc, game->width + 1);
 			if (!new_line)
-				return -1;
-			j = 0;
-			while (j < len)
-			{
-				new_line[j] = game->map[i][j];
-				j++;
-			}
-			while (j < game->width)
-				new_line[j++] = ' ';
-			new_line[j] = '\0';
+				return (-1);
+			ft_memcpy(new_line, game->map[i], len);
+			ft_memset(new_line + len, ' ', game->width - len);
 			game->map[i] = new_line;
 		}
 		i++;
 	}
-	return 1;
+	return (1);
 }
+
 

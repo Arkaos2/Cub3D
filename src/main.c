@@ -26,13 +26,13 @@ int	main(int argc, char **argv)
 		return (printf("Error: map allocation failed\n"), 1);
 	close(game->map_fd);
 	pad_map(game);
-	printf("%s%s%s%s%d\n%d\n", game->path_ea, game->path_no, game->path_we, game->path_so, game->f_color, game->c_color);
 	i = 0;
 	while (game->map[i])
 	{
-		printf("%s\n", game->map[i]);
-		i++;
+    printf("[%s]\n", game->map[i]);
+    i++;
 	}
+
 	return (0);
 }
 
