@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (game->map_copy[i])
 	{
-		printf("[%s]\n", game->map_copy[i]);
+		printf("%s\n", game->map_copy[i]);
 		i++;
 	}
 

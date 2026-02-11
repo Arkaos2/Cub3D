@@ -66,7 +66,6 @@ static char	*fill(t_game *game)
 		s++;
 		i++;
 	}
-	printf("%d\n\n", s);
 	res[i] = '\0';
 	return (res);
 }
