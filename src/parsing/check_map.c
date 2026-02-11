@@ -1,5 +1,47 @@
 #include "../../includes/cub3d.h"
 
+static int	read_color_value(char *s, int *i)
+{
+	int	start;
+	int	val;
+
+	skip_whitespace(s, i);
+	start = *i;
+	if (!ft_isdigit(s[*i]))
+		return (-1);
+	while (ft_isdigit(s[*i]))
+		(*i)++;
+	val = ft_atoi(s + start);
+	if (val < 0 || val > 255)
+		return (-1);
+	return (val);
+}
+
+int	parse_color(char *s)
+{
+	int	i;
+	int	r;
+	int	g;
+	int	b;
+
+	i = 0;
+	r = read_color_value(s, &i);
+	if (r < 0 || s[i] != ',')
+		return (-1);
+	i++;
+	g = read_color_value(s, &i);
+	if (g < 0 || s[i] != ',')
+		return (-1);
+	i++;
+	b = read_color_value(s, &i);
+	if (b < 0)
+		return (-1);
+	skip_whitespace(s, &i);
+	if (s[i] != '\0')
+		return (-1);
+	return ((r << 16) | (g << 8) | b);
+}
+
 static int	grab_path(t_game *game, char *line, int *i)
 {
 	skip_whitespace(line, i);
@@ -46,46 +88,6 @@ static int	grab_path(t_game *game, char *line, int *i)
 	return (0);
 }
 
-static int	read_color_value(char *s, int *i)
-{
-	int	val;
-	int	start;
-
-	skip_whitespace(s, i);
-	start = *i;
-	if (!ft_isdigit(s[*i]))
-		return (-1);
-	val = ft_atoi(s + *i);
-	while (ft_isdigit(s[*i]))
-		(*i)++;
-	if (*i == start || val < 0 || val > 255)
-		return (-1);
-	return (val);
-}
-
-int	parse_color(char *s)
-{
-	int	i;
-	int	r;
-	int	g;
-	int	b;
-
-	i = 0;
-	r = read_color_value(s, &i);
-	if (r < 0 || s[i++] != ',')
-		return (-1);
-	g = read_color_value(s, &i);
-	if (g < 0 || s[i++] != ',')
-		return (-1);
-	b = read_color_value(s, &i);
-	if (b < 0)
-		return (-1);
-	skip_whitespace(s, &i);
-	if (s[i])
-		return (-1);
-	return ((r << 16) | (g << 8) | b);
-}
-
 static int	grab_color(t_game *game, char *line, int *i)
 {
 	skip_whitespace(line, i);
@@ -97,6 +99,8 @@ static int	grab_color(t_game *game, char *line, int *i)
 		*i += 1;
 		skip_whitespace(line, i);
 		game->f_color = parse_color(line + *i);
+		if (game->f_color == -1)
+			return (0);
 		return (1);
 	}
 	if (line[*i] == 'C')
@@ -107,6 +111,8 @@ static int	grab_color(t_game *game, char *line, int *i)
 		*i += 1;
 		skip_whitespace(line, i);
 		game->c_color = parse_color(line + *i);
+		if (game->c_color == -1)
+			return (0);
 		return (1);
 	}
 	return (0);
@@ -114,30 +120,22 @@ static int	grab_color(t_game *game, char *line, int *i)
 
 static int	process_data_line(t_game *game, char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	skip_whitespace(line, &i);
 	if (is_texture_id(line, i))
-	{
-		if (!grab_path(game, line, &i))
-			return (0);
-		return (1);
-	}
-	else if (is_color_id(line, i))
-	{
-		if (!grab_color(game, line, &i))
-			return (0);
-		return (1);
-	}
+		return (grab_path(game, line, &i));
+	if (is_color_id(line, i))
+		return (grab_color(game, line, &i));
 	return (-1);
 }
 
-char *fill_data(t_game *game)
+char	*fill_data(t_game *game)
 {
-	char *line;
-	int count;
-	int result;
+	char	*line;
+	int		count;
+	int		result;
 
 	count = 0;
 	line = get_next_line(game->map_fd);
@@ -148,7 +146,7 @@ char *fill_data(t_game *game)
 			result = process_data_line(game, line);
 			if (result == 1)
 				count++;
-			else if (result == 0 || result == -1)
+			else
 				return (free(line), NULL);
 		}
 		free(line);

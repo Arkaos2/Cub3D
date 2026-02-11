@@ -27,10 +27,10 @@ int	main(int argc, char **argv)
 	close(game->map_fd);
 	pad_map(game);
 	i = 0;
-	while (game->map[i])
+	while (game->map_copy[i])
 	{
-    printf("[%s]\n", game->map[i]);
-    i++;
+		printf("[%s]\n", game->map_copy[i]);
+		i++;
 	}
 
 	return (0);

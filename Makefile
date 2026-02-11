@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME			= cub3d
+NAME			= cub3D
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g3 -Ilibft/includes -Iincludes
 LDFLAGS			= -lreadline

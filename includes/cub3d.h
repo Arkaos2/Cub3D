@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/01/30 19:19:38 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/02/11 14:21:20 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef struct s_game
 	t_gc	*gc;
 
 	char	**map;
+	char	**map_copy;
+
 
 	char	*path_no;
 	char	*path_so;
@@ -69,15 +71,17 @@ char		*gc_strndup(t_gc *gc, const char *s, int n);
 char		*gc_strjoin(t_gc *gc, const char *s1, const char *s2);
 char		*gc_substr(t_gc *gc, char const *s, unsigned int start, size_t len);
 
-int	is_texture_id(char *line, int i);
-int	is_color_id(char *line, int i);
+int			is_texture_id(char *line, int i);
+int			is_color_id(char *line, int i);
 
-int		fill_map(t_game *game, char *line);
-int		pad_map(t_game *game);
+int			fill_map(t_game *game, char *line);
+int			pad_map(t_game *game);
 
 int			check_void(t_game *game);
 int			check_arg(char *args);
 char		*fill_data(t_game *game);
+
+void	skip_space(int fd, char **temp);
 
 
 #endif
