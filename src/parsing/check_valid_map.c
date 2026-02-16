@@ -62,7 +62,7 @@ static char	*fill(t_game *game)
 	i = 0;
 	while (i < game->width)
 	{
-		res[i] = 'U';
+		res[i] = '.';
 		s++;
 		i++;
 	}
@@ -83,7 +83,7 @@ static int	copy_pad_line(t_game *game, int i, int j)
 	y = len;
 	while (y < game->width )
 	{
-		game->map_copy[i][y] = 'U';
+		game->map_copy[i][y] = '.';
 		y++;
 	}
 	game->map_copy[i][y] = '\0';

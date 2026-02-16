@@ -21,9 +21,8 @@ SRCS			= src/main.c \
 			src/parsing/check_arg.c \
 			src/parsing/check_map.c \
 			src/parsing/check_valid_map.c \
-			src/parsing/utils.c
-
-
+			src/parsing/utils.c \
+			src/parsing/flood_fill.c
 
 OBJS			= $(SRCS:.c=.o)
 

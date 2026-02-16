@@ -45,6 +45,10 @@ typedef struct s_game
 	int		f_color;
 	int		c_color;
 
+	int		player_y;
+	int		player_x;
+	char	dir;
+
 	int		height;
 	int		width;
 
@@ -80,6 +84,9 @@ int			pad_map(t_game *game);
 int			check_void(t_game *game);
 int			check_arg(char *args);
 char		*fill_data(t_game *game);
+
+int		flood_fill(t_game *g, int y, int x);
+int		map(t_game *game);
 
 void	skip_space(int fd, char **temp);
 
