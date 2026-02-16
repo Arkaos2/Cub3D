@@ -1,5 +1,21 @@
 #include "cub3d.h"
 
+static int	is_empty_line(char *line)
+{
+	int	i;
+
+	if (!line || line[0] == '\0')
+		return (1);
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static int	max_width(t_game *game)
 {
 	int	i;
@@ -33,6 +49,8 @@ int	fill_map(t_game *game, char *line)
 		len = ft_strlen(line);
 		while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
 			1 && (line[len - 1] = '\0', len--);
+		if (is_empty_line(line))
+			return (free(line), -1);
 		game->map[i] = gc_strdup(game->gc, line);
 		if(!game->map[i])
 			return (-1);

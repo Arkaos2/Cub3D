@@ -43,19 +43,15 @@ int	check_element(t_game *game)
 
 int flood_fill(t_game *g, int y, int x)
 {
-	if (y < 0 || y >= g->height + 2
-		|| x < 0 || x >= g->width)
+	if (y < 0 || y >= g->height + 2 || x < 0 || x >= g->width)
 		return (0);
-
-	if (g->map_copy[y][x] == 'U')
+	if (g->map_copy[y][x] == 'U' || g->map_copy[y][x] == '.')
 		return (0);
-
-	if (g->map_copy[y][x] == '1'
-		|| g->map_copy[y][x] == 'V')
+	if (g->map_copy[y][x] == '1' || g->map_copy[y][x] == 'V')
 		return (1);
-
+	if (g->map_copy[y][x] == ' ' || g->map_copy[y][x] == '\t')
+		return (0);
 	g->map_copy[y][x] = 'V';
-
 	if (!flood_fill(g, y + 1, x))
 		return (0);
 	if (!flood_fill(g, y - 1, x))
@@ -70,6 +66,9 @@ int flood_fill(t_game *g, int y, int x)
 
 int	map(t_game *game)
 {
+	int	i;
+	int	j;
+
 	if(!check_element(game))
 	{
 		printf("check map fail\n");
@@ -81,6 +80,23 @@ int	map(t_game *game)
 		printf("map ouverte\n");
 		return (0);
 	}
-
+	i = 0;
+	while (game->map[i])
+	{
+		j = 0;
+		while (game->map[i][j])
+		{
+			if (game->map[i][j] == '0' && game->map_copy[i + 1][j] != 'V')
+			{
+				if (!flood_fill(game, i + 1, j))
+				{
+					printf("0 isole non ferme trouve\n");
+					return (0);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
 	return 1;
 }
