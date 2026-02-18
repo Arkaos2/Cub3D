@@ -34,7 +34,8 @@ int	main(int argc, char **argv)
 		printf("[%s]\n", game->map_copy[i]);
 		i++;
 	}
-
+	mlx_start(game);
+	mlx_loop(game->mlx);
 	return (0);
 }
 

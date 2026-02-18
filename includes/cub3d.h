@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include "../libs/libft/libft.h"
+# include "../libs/minilibx-linux/mlx.h"
 
 # include <stdio.h>
 # include <math.h>
@@ -29,6 +30,14 @@ typedef struct s_game
 
 	char	**map;
 	char	**map_copy;
+
+	void	*mlx;
+	void	*win;
+	void	*img_player;
+	void	*img_floor;
+	void	*img_wall;
+	int		x;
+	int		y;
 
 
 	char	*path_no;
@@ -84,6 +93,8 @@ int			pad_map(t_game *game);
 int			check_void(t_game *game);
 int			check_arg(char *args);
 char		*fill_data(t_game *game);
+
+int	mlx_start(t_game *game);
 
 int		flood_fill(t_game *g, int y, int x);
 int		map(t_game *game);

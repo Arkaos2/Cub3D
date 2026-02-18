@@ -11,8 +11,6 @@
 # **************************************************************************** #
 
 NAME			= cub3D
-CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g3 -Ilibft/includes -Iincludes
 LDFLAGS			= -lreadline
 
 SRCS			= src/main.c \
@@ -22,7 +20,18 @@ SRCS			= src/main.c \
 			src/parsing/check_map.c \
 			src/parsing/check_valid_map.c \
 			src/parsing/utils.c \
-			src/parsing/flood_fill.c
+			src/parsing/flood_fill.c \
+			src/mlx_2d/texture.c
+
+
+MLX_DIR = libs/minilibx-linux
+MLX_LIB = $(MLX_DIR)/libmlx.a
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
+
+CC				= cc
+CFLAGS			= -Wall -Wextra -Werror -g3 -Ilibft/includes -Iincludes -I$(MLX_DIR)
+LDFLAGS			= -lreadline
+
 
 OBJS			= $(SRCS:.c=.o)
 
@@ -31,11 +40,14 @@ LIBFT			= $(LIBFT_PATH)/libft.a
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) $(MLX_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_PATH)
+
+$(MLX_LIB):
+	@$(MAKE) -C $(MLX_DIR)
 
 %.o: %.c includes/cub3d.h
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -43,6 +55,7 @@ $(LIBFT):
 clean:
 	@rm -f $(OBJS) $(BONUS_OBJS)
 	@$(MAKE) -C $(LIBFT_PATH) clean
+	@$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	@rm -f $(NAME)
@@ -50,4 +63,5 @@ fclean: clean
 
 re: fclean all
 
+.PHONY: all clean fclean re
 .PHONY: all clean fclean re bonus
