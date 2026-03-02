@@ -21,22 +21,25 @@ SRCS			= src/main.c \
 			src/parsing/check_valid_map.c \
 			src/parsing/utils.c \
 			src/parsing/flood_fill.c \
-			src/mlx_2d/texture.c
-
-
-MLX_DIR = libs/minilibx-linux
-MLX_LIB = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11
-
-CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g3 -Ilibft/includes -Iincludes -I$(MLX_DIR)
-LDFLAGS			= -lreadline
-
+			src/mlx_2d/texture.c \
+			src/mlx_2d/ray_casting.c \
+			src/mlx_2d/render_3d_init.c \
+			src/mlx_2d/render_3d_dda.c \
+			src/mlx_2d/render_3d_draw.c \
+			src/mlx_2d/render_3d_utils.c \
+			src/mlx_2d/key_hooks.c
 
 OBJS			= $(SRCS:.c=.o)
 
 LIBFT_PATH		=	libs/libft
 LIBFT			= $(LIBFT_PATH)/libft.a
+
+MLX_DIR			= libs/minilibx-linux
+MLX_LIB			= $(MLX_DIR)/libmlx.a
+MLX_FLAGS		= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+
+CC				= gcc
+CFLAGS			= -Wall -Wextra -Werror -g
 
 all: $(NAME)
 

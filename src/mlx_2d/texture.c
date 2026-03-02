@@ -1,6 +1,6 @@
-#include "cub3d.h"
+#include "../../includes/cub3d.h"
 
-static void	cleanup(t_game *game)
+void	cleanup(t_game *game)
 {
 	if (game->img_wall)
 		mlx_destroy_image(game->mlx, game->img_wall);
@@ -8,6 +8,16 @@ static void	cleanup(t_game *game)
 		mlx_destroy_image(game->mlx, game->img_floor);
 	if (game->img_player)
 		mlx_destroy_image(game->mlx, game->img_player);
+	if (game->tex_no.img)
+		mlx_destroy_image(game->mlx, game->tex_no.img);
+	if (game->tex_so.img)
+		mlx_destroy_image(game->mlx, game->tex_so.img);
+	if (game->tex_we.img)
+		mlx_destroy_image(game->mlx, game->tex_we.img);
+	if (game->tex_ea.img)
+		mlx_destroy_image(game->mlx, game->tex_ea.img);
+	if (game->img_3d)
+		mlx_destroy_image(game->mlx, game->img_3d);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)
@@ -17,77 +27,6 @@ static void	cleanup(t_game *game)
 	exit(0);
 }
 
-static int	can_move(t_game *game, int n_px, int n_py)
-{
-	int	s;
-	int	z;
-
-	s = 24;
-	z = 4;
-	if (n_px < 0 || n_py < 0 || n_px + 32 > game->width * 32
-		|| n_py + 32 > game->height * 32)
-		return (0);
-	if (game->map[(n_py + z) / 32][(n_px + z) / 32] == '1')
-		return (0);
-	if (game->map[(n_py + z) / 32][(n_px + z + s - 1) / 32] == '1')
-		return (0);
-	if (game->map[(n_py + z + s - 1) / 32][(n_px + z) / 32] == '1')
-		return (0);
-	if (game->map[(n_py + z + s - 1) / 32][(n_px + z + s - 1) / 32] == '1')
-		return (0);
-	return (1);
-}
-
-static int	move_player(int keycode, t_game *game)
-{
-	int	new_px;
-	int	new_py;
-
-	new_px = game->player_x;
-	new_py = game->player_y;
-	if (keycode == 119)
-		new_py -= 4;
-	else if (keycode == 115)
-		new_py += 4;
-	else if (keycode == 97)
-		new_px -= 4;
-	else if (keycode == 100)
-		new_px += 4;
-	if (can_move(game, new_px, new_py))
-	{
-		game->player_x = new_px;
-		game->player_y = new_py;
-		game->x = game->player_x / 32;
-		game->y = game->player_y / 32;
-		return (1);
-	}
-	return (0);
-}
-
-static void	handle_movement(int keycode, t_game *game)
-{
-	if (move_player(keycode, game))
-	{
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_player, game->player_x, game->player_y);
-	}
-}
-
-static int	handle_key(int keycode, t_game *game)
-{
-
-	if (keycode == 65307)
-		cleanup(game);
-	if (keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
-		handle_movement(keycode, game);;
-	return (0);
-}
-
-static void	setup_hooks(t_game *game)
-{
-	mlx_hook(game->win, 2, 1L << 0, handle_key, game);
-}
-
 
 static void	load_sprites(t_game *game)
 {
@@ -95,8 +34,46 @@ static void	load_sprites(t_game *game)
 	int	h;
 
 	game->img_player = mlx_xpm_file_to_image(game->mlx, "texture/p.xpm", &w, &h);
+	if (!game->img_player)
+	{
+		ft_printf("Error\n: Failed to load texture/p.xpm\n");
+		cleanup(game);
+	}
 	game->img_wall = mlx_xpm_file_to_image(game->mlx, "texture/1.xpm", &w, &h);
+	if (!game->img_wall)
+	{
+		ft_printf("Error\n: Failed to load texture/1.xpm\n");
+		cleanup(game);
+	}
 	game->img_floor = mlx_xpm_file_to_image(game->mlx, "texture/0.xpm", &w, &h);
+	if (!game->img_floor)
+	{
+		ft_printf("Error\n: Failed to load texture/0.xpm\n");
+		cleanup(game);
+	}
+}
+
+static void	load_texture(t_game *game, t_texture *tex, char *path)
+{
+	tex->width = TEX_SIZE;
+	tex->height = TEX_SIZE;
+	tex->img = mlx_xpm_file_to_image(game->mlx, path,
+			&tex->width, &tex->height);
+	if (!tex->img)
+	{
+		ft_printf("Error\n: Failed to load %s\n", path);
+		cleanup(game);
+	}
+	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp,
+			&tex->line_len, &tex->endian);
+}
+
+void	load_textures(t_game *game)
+{
+	load_texture(game, &game->tex_no, game->path_no);
+	load_texture(game, &game->tex_so, game->path_so);
+	load_texture(game, &game->tex_we, game->path_we);
+	load_texture(game, &game->tex_ea, game->path_ea);
 }
 
 static void	draw_pixel(t_game *game, int x, int y)
@@ -108,7 +85,31 @@ static void	draw_pixel(t_game *game, int x, int y)
 		mlx_put_image_to_window(game->mlx, game->win,
 			game->img_floor, x * 32, y * 32);
 }
-static void	draw_map(t_game *game)
+
+void	draw_player_direction(t_game *game)
+{
+	double	x;
+	double	y;
+	double	dx;
+	double	dy;
+
+	x = game->player_x + 16;
+	y = game->player_y + 16;
+	dx = cos(game->angle);
+	dy = sin(game->angle);
+	while (!is_wall(game, (int)x, (int)y))
+	{
+		x += dx;
+		y += dy;
+	}
+	mlx_pixel_put(game->mlx, game->win, (int)x, (int)y, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x + 1, (int)y, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x - 1, (int)y, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x, (int)y + 1, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x, (int)y - 1, 0xFF0000);
+}
+
+void	draw_map(t_game *game)
 {
 	int	x;
 	int	y;
@@ -134,10 +135,7 @@ int	mlx_start(t_game *game)
 		gc_destroy(game->gc);
 		exit(1);
 	}
-	game->win = mlx_new_window(game->mlx,
-			game->width * 32,
-			game->height * 32,
-			"cub3D");
+	game->win = mlx_new_window(game->mlx, 1280, 720, "cub3D");
 	if (!game->win)
 	{
 		ft_printf("Error\n: impossible de créer la fenêtre\n");
@@ -145,9 +143,16 @@ int	mlx_start(t_game *game)
 		exit(1);
 	}
 	load_sprites(game);
+	load_textures(game);
+	game->img_3d = mlx_new_image(game->mlx, 1280, 720);
+	if (!game->img_3d)
+	{
+		ft_printf("Error\n: impossible de créer l'image 3D\n");
+		cleanup(game);
+	}
+	game->addr_3d = mlx_get_data_addr(game->img_3d, &game->bpp_3d,
+			&game->line_len_3d, &game->endian_3d);
 	setup_hooks(game);
-	draw_map(game);
-	mlx_put_image_to_window(game->mlx, game->win,
-		game->img_player, game->player_x, game->player_y);
+	render_3d(game);
 	return 1;
 }

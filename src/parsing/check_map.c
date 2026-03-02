@@ -52,7 +52,7 @@ static int	grab_path(t_game *game, char *line, int *i)
 		game->has_no = 1;
 		*i += 2;
 		skip_whitespace(line, i);
-		game->path_no = gc_strdup(game->gc, line + *i);
+		game->path_no = gc_strtrim(game->gc, line + *i, " \t\n\r");
 		return (1);
 	}
 	if (line[*i] == 'S' && line[*i + 1] == 'O')
@@ -62,7 +62,7 @@ static int	grab_path(t_game *game, char *line, int *i)
 		game->has_so = 1;
 		*i += 2;
 		skip_whitespace(line, i);
-		game->path_so = gc_strdup(game->gc, line + *i);
+		game->path_so = gc_strtrim(game->gc, line + *i, " \t\n\r");
 		return (1);
 	}
 	if (line[*i] == 'W' && line[*i + 1] == 'E')
@@ -72,7 +72,7 @@ static int	grab_path(t_game *game, char *line, int *i)
 		game->has_we = 1;
 		*i += 2;
 		skip_whitespace(line, i);
-		game->path_we = gc_strdup(game->gc, line + *i);
+		game->path_we = gc_strtrim(game->gc, line + *i, " \t\n\r");
 		return (1);
 	}
 	if (line[*i] == 'E' && line[*i + 1] == 'A')
@@ -82,7 +82,7 @@ static int	grab_path(t_game *game, char *line, int *i)
 		game->has_ea = 1;
 		*i += 2;
 		skip_whitespace(line, i);
-		game->path_ea = gc_strdup(game->gc, line + *i);
+		game->path_ea = gc_strtrim(game->gc, line + *i, " \t\n\r");
 		return (1);
 	}
 	return (0);

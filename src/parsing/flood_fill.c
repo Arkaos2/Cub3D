@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../includes/cub3d.h"
 
 static int	is_valid_char(char c)
 {
@@ -30,9 +30,17 @@ int	check_element(t_game *game)
 			if (is_player(game->map[i][j]))
 			{
 				player++;
-				game->player_x = j;
-				game->player_y = i;
+				game->player_x = j * 32;
+				game->player_y = i * 32;
 				game->dir = game->map[i][j];
+				if (game->dir == 'N')
+					game->angle = -M_PI / 2;
+				else if (game->dir == 'S')
+					game->angle = M_PI / 2;
+				else if (game->dir == 'E')
+					game->angle = 0;
+				else if (game->dir == 'W')
+					game->angle = M_PI;
 			}
 			j++;
 		}
@@ -74,8 +82,10 @@ int	map(t_game *game)
 		printf("check map fail\n");
 		return 0;
 	}
+	game->x = game->player_x / 32;
+	game->y = game->player_y / 32;
 	printf("player y=%d x=%d\n", game->player_y, game->player_x);
-	if (!flood_fill(game, game->player_y + 1, game->player_x))
+	if (!flood_fill(game, game->player_y / 32 + 1, game->player_x / 32))
 	{
 		printf("map ouverte\n");
 		return (0);

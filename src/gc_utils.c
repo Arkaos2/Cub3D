@@ -108,3 +108,16 @@ char	*gc_substr(t_gc *gc, char const *s, unsigned int start, size_t len)
 	s2[i] = '\0';
 	return (s2);
 }
+
+char	*gc_strtrim(t_gc *gc, char const *s1, char const *set)
+{
+	char	*trimmed;
+	char	*result;
+
+	trimmed = ft_strtrim(s1, set);
+	if (!trimmed)
+		return (NULL);
+	result = gc_strdup(gc, trimmed);
+	free(trimmed);
+	return (result);
+}

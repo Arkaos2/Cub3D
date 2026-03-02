@@ -28,7 +28,10 @@ int	main(int argc, char **argv)
 	pad_map(game);
 	i = 0;
 	if (!map(game))
+	{
 		printf("flood fill fail\n");
+		return (1);
+	}
 	while (game->map_copy[i])
 	{
 		printf("[%s]\n", game->map_copy[i]);
