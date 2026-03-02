@@ -1,5 +1,17 @@
 #include "../includes/cub3d.h"
 
+static void	flush_gnl(int fd)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+}
+
 static int	validate(t_game *game, t_gc *gc, char *argv)
 {
 	char	*line;
@@ -10,13 +22,14 @@ static int	validate(t_game *game, t_gc *gc, char *argv)
 		return (gc_destroy(gc), perror("open"), 1);
 	line = fill_data(game);
 	if (!line)
-		return (close(game->map_fd), gc_destroy(gc),
-			printf("Error: map parsing failed\n"), 1);
+		return (flush_gnl(game->map_fd), close(game->map_fd),
+			gc_destroy(gc), printf("Error: map parsing failed\n"), 1);
 	if (!check_textures(game))
-		return (free(line), close(game->map_fd), gc_destroy(gc), 1);
+		return (free(line), flush_gnl(game->map_fd),
+			close(game->map_fd), gc_destroy(gc), 1);
 	if (fill_map(game, line) < 0)
-		return (close(game->map_fd), gc_destroy(gc),
-			printf("Error: map allocation failed\n"), 1);
+		return (flush_gnl(game->map_fd), close(game->map_fd),
+			gc_destroy(gc), printf("Error: map allocation failed\n"), 1);
 	close(game->map_fd);
 	pad_map(game);
 	if (!map(game))
