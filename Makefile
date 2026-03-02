@@ -18,11 +18,17 @@ SRCS			= src/main.c \
 			src/gc_utils.c \
 			src/parsing/check_arg.c \
 			src/parsing/check_map.c \
+			src/parsing/check_map_utils.c \
 			src/parsing/check_valid_map.c \
+			src/parsing/pad_map.c \
 			src/parsing/utils.c \
+			src/parsing/utils_parsing.c \
 			src/parsing/flood_fill.c \
+			src/parsing/flood_fill_map.c \
 			src/mlx_2d/texture.c \
+			src/mlx_2d/cleanup.c \
 			src/mlx_2d/ray_casting.c \
+			src/mlx_2d/ray_casting_utils.c \
 			src/mlx_3d/render_3d_init.c \
 			src/mlx_3d/render_3d_dda.c \
 			src/mlx_3d/render_3d_draw.c \

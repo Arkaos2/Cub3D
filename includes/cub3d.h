@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/03/02 14:58:28 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:51:24 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,15 @@ typedef struct s_game
 	void		*mlx;
 	void		*win;
 
-	// Sprites pour la minimap
 	void		*img_player;
 	void		*img_floor;
 	void		*img_wall;
 
-	// Textures pour le rendu 3D
 	t_texture	tex_no;
 	t_texture	tex_so;
 	t_texture	tex_we;
 	t_texture	tex_ea;
 
-	// Buffer pour le rendu 3D
 	void		*img_3d;
 	char		*addr_3d;
 	int			bpp_3d;
@@ -112,7 +109,6 @@ typedef struct s_game
 	int			x;
 	int			y;
 
-	// Chemins des textures
 	char		*path_no;
 	char		*path_so;
 	char		*path_we;
@@ -124,17 +120,14 @@ typedef struct s_game
 	int			has_f;
 	int			has_c;
 
-	// Couleurs sol et plafond
 	int			f_color;
 	int			c_color;
 
-	// Position et orientation du joueur
 	int			player_y;
 	int			player_x;
 	char		dir;
 	double		angle;
 
-	// Dimensions de la map
 	int			height;
 	int			width;
 
@@ -155,20 +148,25 @@ int			check_arg(char *args);
 int			parse_color(char *s);
 char		*fill_data(t_game *game);
 int			fill_map(t_game *game, char *line);
+int			max_width(t_game *game);
 int			pad_map(t_game *game);
 int			check_element(t_game *game);
 int			flood_fill(t_game *g, int y, int x);
 int			map(t_game *game);
 int			count_lines(t_game *game);
+char		**map_parse(t_game *game);
 int			is_color_id(char *line, int i);
 int			is_texture_id(char *line, int i);
 void		skip_space(int fd, char **temp);
+int			grab_path(t_game *game, char *line, int *i);
+int			grab_color(t_game *game, char *line, int *i);
 
 int			mlx_start(t_game *game);
 void		cleanup(t_game *game);
 void		draw_map(t_game *game);
 void		draw_player_direction(t_game *game);
 void		draw_rays(t_game *game);
+void		draw_wall_slice_2d(t_game *game, int x, double distance);
 void		render_3d(t_game *game);
 void		setup_hooks(t_game *game);
 int			can_move(t_game *game, int n_px, int n_py);

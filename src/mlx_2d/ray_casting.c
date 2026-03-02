@@ -36,52 +36,6 @@ static double	cast_ray(t_game *game, double ray_angle)
 	distance = distance * cos(ray_angle - game->angle);
 	return (distance);
 }
-static void	draw_wall_slice(t_game *game, int x, double distance)
-{
-	int		wall_height;
-	int		wall_top;
-	int		wall_bottom;
-	int		y;
-	int		color;
-	int		screen_height;
-
-	screen_height = game->height * 32;
-	if (distance < 1)
-		distance = 1;
-	wall_height = (int)((32.0 / distance) * 277);
-	wall_top = (screen_height / 2) - (wall_height / 2);
-	wall_bottom = wall_top + wall_height;
-	// Dessiner le plafond
-	y = 0;
-	while (y < wall_top)
-	{
-		mlx_pixel_put(game->mlx, game->win, x, y, game->c_color);
-		y++;
-	}
-	// Dessiner le mur (gradient selon la distance)
-	color = 0x808080;
-	if (distance < 50)
-		color = 0xFFFFFF;
-	else if (distance < 100)
-		color = 0xCCCCCC;
-	else if (distance < 150)
-		color = 0x999999;
-	else if (distance < 200)
-		color = 0x666666;
-	else
-		color = 0x333333;
-	while (y < wall_bottom && y < screen_height)
-	{
-		mlx_pixel_put(game->mlx, game->win, x, y, color);
-		y++;
-	}
-	// Dessiner le sol
-	while (y < screen_height)
-	{
-		mlx_pixel_put(game->mlx, game->win, x, y, game->f_color);
-		y++;
-	}
-}
 
 void	draw_rays(t_game *game)
 {
@@ -100,7 +54,30 @@ void	draw_rays(t_game *game)
 		angle_step = fov / screen_width;
 		ray_angle = game->angle - fov / 2 + i * angle_step;
 		distance = cast_ray(game, ray_angle);
-		draw_wall_slice(game, i, distance);
+		draw_wall_slice_2d(game, i, distance);
 		i++;
 	}
+}
+
+void	draw_player_direction(t_game *game)
+{
+	double	x;
+	double	y;
+	double	dx;
+	double	dy;
+
+	x = game->player_x + 16;
+	y = game->player_y + 16;
+	dx = cos(game->angle);
+	dy = sin(game->angle);
+	while (!is_wall(game, (int)x, (int)y))
+	{
+		x += dx;
+		y += dy;
+	}
+	mlx_pixel_put(game->mlx, game->win, (int)x, (int)y, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x + 1, (int)y, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x - 1, (int)y, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x, (int)y + 1, 0xFF0000);
+	mlx_pixel_put(game->mlx, game->win, (int)x, (int)y - 1, 0xFF0000);
 }

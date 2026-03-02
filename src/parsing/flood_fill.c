@@ -12,101 +12,52 @@ static int	is_player(char c)
 	return (c == 'N' || c == 'E' || c == 'W' || c == 'S');
 }
 
-int	check_element(t_game *game)
+static void	set_player_angle(t_game *game)
 {
-	int	i;
-	int	j;
-	int	player;
-
-	i = 0;
-	player = 0;
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (!is_valid_char(game->map[i][j]))
-				return (0);
-			if (is_player(game->map[i][j]))
-			{
-				player++;
-				game->player_x = j * 32;
-				game->player_y = i * 32;
-				game->dir = game->map[i][j];
-				if (game->dir == 'N')
-					game->angle = -M_PI / 2;
-				else if (game->dir == 'S')
-					game->angle = M_PI / 2;
-				else if (game->dir == 'E')
-					game->angle = 0;
-				else if (game->dir == 'W')
-					game->angle = M_PI;
-			}
-			j++;
-		}
-		i++;
-	}
-	return (player == 1);
+	if (game->dir == 'N')
+		game->angle = -M_PI / 2;
+	else if (game->dir == 'S')
+		game->angle = M_PI / 2;
+	else if (game->dir == 'E')
+		game->angle = 0;
+	else if (game->dir == 'W')
+		game->angle = M_PI;
 }
 
-int flood_fill(t_game *g, int y, int x)
+static int	check_line(t_game *game, int i, int *p)
 {
-	if (y < 0 || y >= g->height + 2 || x < 0 || x >= g->width)
-		return (0);
-	if (g->map_copy[y][x] == 'U' || g->map_copy[y][x] == '.')
-		return (0);
-	if (g->map_copy[y][x] == '1' || g->map_copy[y][x] == 'V')
-		return (1);
-	if (g->map_copy[y][x] == ' ' || g->map_copy[y][x] == '\t')
-		return (0);
-	g->map_copy[y][x] = 'V';
-	if (!flood_fill(g, y + 1, x))
-		return (0);
-	if (!flood_fill(g, y - 1, x))
-		return (0);
-	if (!flood_fill(g, y, x + 1))
-		return (0);
-	if (!flood_fill(g, y, x - 1))
-		return (0);
+	int	j;
+
+	j = 0;
+	while (game->map[i][j])
+	{
+		if (!is_valid_char(game->map[i][j]))
+			return (0);
+		if (is_player(game->map[i][j]))
+		{
+			(*p)++;
+			game->player_x = j * 32;
+			game->player_y = i * 32;
+			game->dir = game->map[i][j];
+			set_player_angle(game);
+		}
+		j++;
+	}
 	return (1);
 }
 
-
-int	map(t_game *game)
+int	check_element(t_game *game)
 {
 	int	i;
-	int	j;
+	int	p;
 
-	if(!check_element(game))
-	{
-		printf("check map fail\n");
-		return 0;
-	}
-	game->x = game->player_x / 32;
-	game->y = game->player_y / 32;
-	printf("player y=%d x=%d\n", game->player_y / 32, game->player_x / 32);
-	if (!flood_fill(game, game->player_y / 32 + 1, game->player_x / 32))
-	{
-		printf("map ouverte\n");
-		return (0);
-	}
 	i = 0;
+	p = 0;
 	while (game->map[i])
 	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (game->map[i][j] == '0' && game->map_copy[i + 1][j] != 'V')
-			{
-				if (!flood_fill(game, i + 1, j))
-				{
-					printf("0 isole non ferme trouve\n");
-					return (0);
-				}
-			}
-			j++;
-		}
+		if (!check_line(game, i, &p))
+			return (0);
 		i++;
 	}
-	return 1;
+	return (p == 1);
 }
