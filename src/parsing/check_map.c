@@ -26,10 +26,12 @@ int	parse_color(char *s)
 
 	i = 0;
 	r = read_color_value(s, &i);
+	skip_whitespace(s, &i);
 	if (r < 0 || s[i] != ',')
 		return (-1);
 	i++;
 	g = read_color_value(s, &i);
+	skip_whitespace(s, &i);
 	if (g < 0 || s[i] != ',')
 		return (-1);
 	i++;

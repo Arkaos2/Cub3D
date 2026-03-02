@@ -32,8 +32,7 @@ static void	load_texture(t_game *game, t_texture *tex, char *path)
 {
 	tex->img = mlx_xpm_file_to_image(game->mlx, path,
 			&tex->width, &tex->height);
-	if (!tex->img && tex->height <= 0 && tex->width <= 0
-		&& tex->width >= 2048 && tex->height >= 2048)
+	if (!tex->img)
 	{
 		ft_printf("Error\n: Failed to load %s\n", path);
 		cleanup(game);
