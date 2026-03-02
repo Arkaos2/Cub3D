@@ -23,10 +23,10 @@ SRCS			= src/main.c \
 			src/parsing/flood_fill.c \
 			src/mlx_2d/texture.c \
 			src/mlx_2d/ray_casting.c \
-			src/mlx_2d/render_3d_init.c \
-			src/mlx_2d/render_3d_dda.c \
-			src/mlx_2d/render_3d_draw.c \
-			src/mlx_2d/render_3d_utils.c \
+			src/mlx_3d/render_3d_init.c \
+			src/mlx_3d/render_3d_dda.c \
+			src/mlx_3d/render_3d_draw.c \
+			src/mlx_3d/render_3d_utils.c \
 			src/mlx_2d/key_hooks.c
 
 OBJS			= $(SRCS:.c=.o)
@@ -34,7 +34,7 @@ OBJS			= $(SRCS:.c=.o)
 LIBFT_PATH		=	libs/libft
 LIBFT			= $(LIBFT_PATH)/libft.a
 
-MLX_DIR			= libs/minilibx-linux
+MLX_DIR			= libs/mlx
 MLX_LIB			= $(MLX_DIR)/libmlx.a
 MLX_FLAGS		= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 

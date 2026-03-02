@@ -6,7 +6,7 @@
 #    By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/12 15:01:45 by saibelab          #+#    #+#              #
-#    Updated: 2025/11/14 17:06:15 by saibelab         ###   ########.fr        #
+#    Updated: 2026/03/02 14:41:11 by saibelab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ INC = libft.h
 OBJS = $(SRCS:.c=.o)
 OBJS_B = $(SRCS_B:.c=.o)
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -I. -g
+CFLAGS = -Wall -Werror -Wextra -I. -g -fPIE
 AR = ar rcs
 RM = rm -f
 

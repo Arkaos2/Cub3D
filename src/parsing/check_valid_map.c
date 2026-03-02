@@ -64,6 +64,8 @@ int	fill_map(t_game *game, char *line)
 	}
 	game->map[i] = NULL;
 	game->height = i;
+	if (i == 0)
+		return (-1);
 	return (0);
 }
 

@@ -69,10 +69,10 @@ int	move_player(int keycode, t_game *game)
 	else if (keycode == 115)
 		1 && (new_px -= (int)(cos(game->angle) * move_speed),
 		new_py -= (int)(sin(game->angle) * move_speed));
-	else if (keycode == 97)
+	else if (keycode == 100)
 		1 && (new_px += (int)(cos(game->angle - M_PI / 2) * move_speed),
 		new_py += (int)(sin(game->angle - M_PI / 2) * move_speed));
-	else if (keycode == 100)
+	else if (keycode == 97)
 		1 && (new_px += (int)(cos(game->angle + M_PI / 2) * move_speed),
 		new_py += (int)(sin(game->angle + M_PI / 2) * move_speed));
 	if (can_move(game, new_px, new_py))

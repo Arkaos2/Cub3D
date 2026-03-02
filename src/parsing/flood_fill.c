@@ -84,7 +84,7 @@ int	map(t_game *game)
 	}
 	game->x = game->player_x / 32;
 	game->y = game->player_y / 32;
-	printf("player y=%d x=%d\n", game->player_y, game->player_x);
+	printf("player y=%d x=%d\n", game->player_y / 32, game->player_x / 32);
 	if (!flood_fill(game, game->player_y / 32 + 1, game->player_x / 32))
 	{
 		printf("map ouverte\n");

@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/02/11 14:21:20 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/03/02 14:58:28 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # include "../libs/libft/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
+# include "../libs/mlx/mlx.h"
 
 # include <stdio.h>
 # include <math.h>
