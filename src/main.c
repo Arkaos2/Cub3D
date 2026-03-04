@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:53:34 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:53:34 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 static void	flush_gnl(int fd)
@@ -56,4 +68,3 @@ int	main(int argc, char **argv)
 	mlx_loop(game->mlx);
 	return (gc_destroy(gc), 0);
 }
-

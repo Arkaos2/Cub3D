@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:53:05 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:53:05 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 int	count_lines(t_game *game)
@@ -5,7 +17,7 @@ int	count_lines(t_game *game)
 	int	i;
 
 	i = 0;
-	while(game->map[i])
+	while (game->map[i])
 		i++;
 	return (i);
 }
@@ -52,3 +64,7 @@ int	is_texture_id(char *line, int i)
 	return (0);
 }
 
+void	setup_hooks(t_game *game)
+{
+	mlx_hook(game->win, 2, 1L << 0, handle_key, game);
+}

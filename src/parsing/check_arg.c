@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_arg.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:52:39 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:52:39 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 int	check_arg(char *args)
@@ -37,4 +49,3 @@ int	check_textures(t_game *game)
 		return (printf("Error: can't open texture: %s\n", game->path_ea), 0);
 	return (1);
 }
-

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:52:42 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:59:26 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 static int	try_no_so(t_game *game, char *line, int *i)
@@ -71,8 +83,7 @@ int	grab_color(t_game *game, char *line, int *i)
 	{
 		if (game->has_f)
 			return (0);
-		game->has_f = 1;
-		*i += 1;
+		1 && (game->has_f = 1, *i += 1);
 		skip_whitespace(line, i);
 		game->f_color = parse_color(line + *i);
 		if (game->f_color == -1)

@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/03/02 17:55:49 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/03/04 16:58:03 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,9 @@ void		init_ray(t_game *game, t_ray *ray, int x);
 void		perform_dda(t_game *game, t_ray *ray);
 void		draw_textured_wall(t_game *game, t_ray *ray, int x);
 void		put_pixel(t_game *game, int x, int y, int color);
-int			get_texture_color(char *addr, int line_len, int bpp, int x, int y);
+int			get_texture_color(t_texture *tex, int x, int y);
 void		select_texture(t_game *game, t_ray *ray, t_texture **tex);
 void		calculate_texture_x(t_game *game, t_ray *ray);
 int			calculate_line_height(double perp_wall_dist);
-
 
 #endif

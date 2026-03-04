@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_3d_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:52:36 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:52:36 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 void	put_pixel(t_game *game, int x, int y, int color)
@@ -12,11 +24,11 @@ void	put_pixel(t_game *game, int x, int y, int color)
 	}
 }
 
-int	get_texture_color(char *addr, int line_len, int bpp, int x, int y)
+int	get_texture_color(t_texture *tex, int x, int y)
 {
 	char	*pixel;
 
-	pixel = addr + (y * line_len + x * (bpp / 8));
+	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
 	return (*(unsigned int *)pixel);
 }
 

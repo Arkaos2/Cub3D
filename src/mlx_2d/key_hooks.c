@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_hooks.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:53:40 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:53:40 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 static void	handle_movement(int keycode, t_game *game)
@@ -25,14 +37,10 @@ static int	handle_key(int keycode, t_game *game)
 		game->angle += rot_speed;
 		render_3d(game);
 	}
-	else if (keycode == 119 || keycode == 115 || keycode == 97 || keycode == 100)
+	else if (keycode == 119 || keycode == 115
+		|| keycode == 97 || keycode == 100)
 		handle_movement(keycode, game);
 	return (0);
-}
-
-void	setup_hooks(t_game *game)
-{
-	mlx_hook(game->win, 2, 1L << 0, handle_key, game);
 }
 
 int	can_move(t_game *game, int n_px, int n_py)
@@ -56,30 +64,52 @@ int	can_move(t_game *game, int n_px, int n_py)
 	return (1);
 }
 
-int	move_player(int keycode, t_game *game)
+static void	get_move_delta(int keycode, t_game *game, int *dx, int *dy)
 {
-	int	new_px;
-	int	new_py;
 	double	move_speed;
 
-	1 && (move_speed = 4.0, new_px = game->player_x, new_py = game->player_y);
+	move_speed = 4.0;
+	*dx = 0;
+	*dy = 0;
 	if (keycode == 119)
-		1 && (new_px += (int)(cos(game->angle) * move_speed),
-		new_py += (int)(sin(game->angle) * move_speed));
+		1 && (*dx = (int)(cos(game->angle) * move_speed),
+		*dy = (int)(sin(game->angle) * move_speed));
 	else if (keycode == 115)
-		1 && (new_px -= (int)(cos(game->angle) * move_speed),
-		new_py -= (int)(sin(game->angle) * move_speed));
+		1 && (*dx = (int)(-cos(game->angle) * move_speed),
+		*dy = (int)(-sin(game->angle) * move_speed));
 	else if (keycode == 100)
-		1 && (new_px += (int)(cos(game->angle - M_PI / 2) * move_speed),
-		new_py += (int)(sin(game->angle - M_PI / 2) * move_speed));
+		1 && (*dx = (int)(cos(game->angle - M_PI / 2) * move_speed),
+		*dy = (int)(sin(game->angle - M_PI / 2) * move_speed));
 	else if (keycode == 97)
-		1 && (new_px += (int)(cos(game->angle + M_PI / 2) * move_speed),
-		new_py += (int)(sin(game->angle + M_PI / 2) * move_speed));
-	if (can_move(game, new_px, new_py))
+		1 && (*dx = (int)(cos(game->angle + M_PI / 2) * move_speed),
+		*dy = (int)(sin(game->angle + M_PI / 2) * move_speed));
+}
+
+int	move_player(int keycode, t_game *game)
+{
+	int	dx;
+	int	dy;
+	int	moved;
+
+	moved = 0;
+	get_move_delta(keycode, game, &dx, &dy);
+	if (can_move(game, game->player_x + dx, game->player_y + dy))
 	{
-		1 && (game->player_x = new_px, game->player_y = new_py);
-		1 && (game->x = game->player_x / 32, game->y = game->player_y / 32);
-		return (1);
+		game->player_x += dx;
+		game->player_y += dy;
+		moved = 1;
 	}
-	return (0);
+	else if (can_move(game, game->player_x + dx, game->player_y))
+	{
+		game->player_x += dx;
+		moved = 1;
+	}
+	else if (can_move(game, game->player_x, game->player_y + dy))
+	{
+		game->player_y += dy;
+		moved = 1;
+	}
+	if (moved)
+		1 && (game->x = game->player_x / 32, game->y = game->player_y / 32);
+	return (moved);
 }

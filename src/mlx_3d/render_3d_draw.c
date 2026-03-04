@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_3d_draw.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:52:27 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:52:27 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 static void	draw_ceiling(t_game *game, int x, int draw_start)
@@ -35,8 +47,7 @@ static void	draw_wall_slice(t_game *game, t_draw *d, int x)
 	{
 		tex_y = (int)d->tex_pos & (TEX_SIZE - 1);
 		d->tex_pos += d->step;
-		color = get_texture_color(d->tex->addr, d->tex->line_len,
-				d->tex->bpp, d->ray->tex_x, tex_y);
+		color = get_texture_color(d->tex, d->ray->tex_x, tex_y);
 		put_pixel(game, x, y, color);
 		y++;
 	}

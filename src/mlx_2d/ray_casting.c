@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_casting.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/04 16:53:46 by saibelab          #+#    #+#             */
+/*   Updated: 2026/03/04 16:53:46 by saibelab         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 int	is_wall(t_game *game, int x, int y)
@@ -42,17 +54,14 @@ void	draw_rays(t_game *game)
 	int		i;
 	double	fov;
 	double	ray_angle;
-	double	angle_step;
 	double	distance;
-	int		screen_width;
 
 	fov = 1.0472;
-	screen_width = game->width * 32;
 	i = 0;
-	while (i < screen_width)
+	while (i < game->width * 32)
 	{
-		angle_step = fov / screen_width;
-		ray_angle = game->angle - fov / 2 + i * angle_step;
+		ray_angle = game->angle - fov / 2
+			+ i * (fov / (game->width * 32));
 		distance = cast_ray(game, ray_angle);
 		draw_wall_slice_2d(game, i, distance);
 		i++;
