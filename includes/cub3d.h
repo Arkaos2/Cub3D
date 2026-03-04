@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/03/04 17:02:24 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/03/04 17:05:43 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "../libs/libft/libft.h"
 # include "../libs/mlx/mlx.h"
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 # include <stdio.h>
 # include <math.h>
@@ -27,6 +31,10 @@
 # define SCREEN_WIDTH 1280
 # define SCREEN_HEIGHT 720
 # define TEX_SIZE 64
+# define MINI_TILE 8
+# define MINI_RADIUS 6
+# define MINI_OFF_X 20
+# define MINI_OFF_Y 20
 
 typedef struct s_gcnode
 {
@@ -132,6 +140,7 @@ typedef struct s_game
 	int			width;
 
 	int			map_fd;
+	int			bonus;
 }			t_game;
 
 t_gcnode	*new_node(void *ptr);
@@ -184,5 +193,6 @@ int			get_texture_color(t_texture *tex, int x, int y);
 void		select_texture(t_game *game, t_ray *ray, t_texture **tex);
 void		calculate_texture_x(t_game *game, t_ray *ray);
 int			calculate_line_height(double perp_wall_dist);
+void		draw_minimap(t_game *game);
 
 #endif
