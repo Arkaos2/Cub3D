@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/03/04 16:58:03 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/03/04 17:02:24 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void		draw_rays(t_game *game);
 void		draw_wall_slice_2d(t_game *game, int x, double distance);
 void		render_3d(t_game *game);
 void		setup_hooks(t_game *game);
+int			handle_key(int keycode, t_game *game);
 int			can_move(t_game *game, int n_px, int n_py);
 int			move_player(int keycode, t_game *game);
 int			is_wall(t_game *game, int x, int y);

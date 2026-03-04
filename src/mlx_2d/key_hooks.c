@@ -20,7 +20,7 @@ static void	handle_movement(int keycode, t_game *game)
 	}
 }
 
-static int	handle_key(int keycode, t_game *game)
+int	handle_key(int keycode, t_game *game)
 {
 	double	rot_speed;
 
