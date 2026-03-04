@@ -23,9 +23,9 @@ int	get_texture_color(char *addr, int line_len, int bpp, int x, int y)
 void	select_texture(t_game *game, t_ray *ray, t_texture **tex)
 {
 	if (ray->side == 0 && ray->step_x > 0)
-		*tex = &game->tex_ea;
-	else if (ray->side == 0 && ray->step_x < 0)
 		*tex = &game->tex_we;
+	else if (ray->side == 0 && ray->step_x < 0)
+		*tex = &game->tex_ea;
 	else if (ray->side == 1 && ray->step_y > 0)
 		*tex = &game->tex_so;
 	else
