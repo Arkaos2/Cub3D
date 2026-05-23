@@ -95,3 +95,9 @@ char	*fill_data(t_game *game)
 		return (free(line), NULL);
 	return (line);
 }
+
+int handle_close(t_game *game)
+{
+    cleanup(game);
+    return (0);
+}

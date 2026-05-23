@@ -64,7 +64,8 @@ int	is_texture_id(char *line, int i)
 	return (0);
 }
 
-void	setup_hooks(t_game *game)
+void    setup_hooks(t_game *game)
 {
-	mlx_hook(game->win, 2, 1L << 0, handle_key, game);
+    mlx_hook(game->win, 2, 1L << 0, handle_key, game);
+    mlx_hook(game->win, 17, 0, handle_close, game);
 }

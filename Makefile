@@ -44,7 +44,7 @@ MLX_DIR			= libs/mlx
 MLX_LIB			= $(MLX_DIR)/libmlx.a
 MLX_FLAGS		= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
-CC				= gcc
+CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g
 
 all: $(NAME)
@@ -57,6 +57,9 @@ $(LIBFT):
 
 $(MLX_LIB):
 	@$(MAKE) -C $(MLX_DIR)
+
+src/parsing/utils.o: src/parsing/utils.c includes/cub3d.h
+	$(CC) $(CFLAGS) -Wno-cast-function-type -Wno-incompatible-pointer-types -c $< -o $@
 
 %.o: %.c includes/cub3d.h
 	$(CC) $(CFLAGS) -c $< -o $@

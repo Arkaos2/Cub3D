@@ -6,7 +6,7 @@
 /*   By: saibelab <saibelab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 15:39:24 by saibelab          #+#    #+#             */
-/*   Updated: 2026/03/04 17:05:43 by saibelab         ###   ########.fr       */
+/*   Updated: 2026/05/23 16:17:10 by saibelab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ char		*gc_strjoin(t_gc *gc, const char *s1, const char *s2);
 char		*gc_substr(t_gc *gc, char const *s, unsigned int start, size_t len);
 char		*gc_strtrim(t_gc *gc, char const *s1, char const *set);
 
+int			handle_close(t_game *game);
 int			check_arg(char *args);
 int			check_textures(t_game *game);
 int			parse_color(char *s);
